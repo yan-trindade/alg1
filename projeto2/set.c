@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include<stdbool.h>
+#include <stdbool.h>
 #include "avl.h"
 #include "rb.h"
 
