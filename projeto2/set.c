@@ -52,10 +52,8 @@ SET *set_intersecao(SET *A, SET *B) {
 }
 
 void set_imprimir(SET *set){
-    if(set == NULL || set->arvore == NULL){
+    if(set == NULL || avl_eh_vazia(set->arvore))
         printf("CONJUNTO VAZIO.\n");
-        return; 
-    }
 
     avl_imprimir(set->arvore);
 }
