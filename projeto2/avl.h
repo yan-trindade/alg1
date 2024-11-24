@@ -17,5 +17,6 @@
     void avl_imprimir(AVL *t);
     AVL *avl_unir(AVL *a, AVL *b);
     AVL * avl_inter(AVL *a, AVL *b);
+    bool avl_eh_vazia(AVL *t);
 
 #endif
