@@ -270,3 +270,9 @@ AVL * avl_inter(AVL *a, AVL *b){
     }
     return inter;
 }
+
+bool avl_eh_vazia(AVL *t){
+    if(t->raiz == NULL)
+        return true;
+    return false;
+}
