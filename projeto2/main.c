@@ -4,87 +4,66 @@
 #include "set.h"
 
 int main(){
-    int estrutura_escolhida, tam_set_a, tam_set_b, elem_pertenc_a;
+    int estrutura_escolhida, tam_set_a, tam_set_b;
     scanf("%d", &estrutura_escolhida);
-    
-    switch(estrutura_escolhida){
-        // 0 para AVL, 1 para Rubro-Negra(RB)
-        case(0):
 
-            SET *setA = set_avl_criar();
-            SET *setB = set_avl_criar();
-            scanf("%d", &tam_set_a);
-            scanf("%d", &tam_set_b);
+    SET *A = set_criar(estrutura_escolhida);
+    SET *B = set_criar(estrutura_escolhida);
+    scanf("%d", &tam_set_a);
+    scanf("%d", &tam_set_b);
 
-            for(int i = 1; i <= tam_set_a; i++){
-                int chave;
-                scanf("%d ", &chave);
-                set_avl_inserir(setA, chave);
-            }
-
-            for(int i = 1; i <= tam_set_b; i++){
-                int chave;
-                scanf("%d ", &chave);
-                set_avl_inserir(setB, chave);
-            }
-
-            scanf("%d", &elem_pertenc_a);
-            
-            SET * uniao = set_avl_uniao(setA, setB);
-            SET *inter =  set_avl_intersecao(setA, setB);
-
-
-            set_avl_imprimir(uniao);
-            set_avl_imprimir(inter);
-
-            if(set_avl_pertence(setA, elem_pertenc_a))
-                printf("Pertence.\n");
-            else
-                printf("Nao pertence.\n");
-
-            
-
-            break;
-
-        case(1):
-            
-            SET *setX = set_rb_criar();
-            SET *setY = set_rb_criar();
-            scanf("%d", &tam_set_a);
-            scanf("%d", &tam_set_b);
-
-            for(int i = 1; i <= tam_set_a; i++){
-                int chave;
-                scanf("%d ", &chave);
-                set_rb_inserir(setX, chave);
-            }
-
-            for(int i = 1; i <= tam_set_b; i++){
-                int chave;
-                scanf("%d ", &chave);
-                set_rb_inserir(setY, chave);
-            }
-
-            scanf("%d", &elem_pertenc_a);
-            
-            SET * uniao2 = set_rb_uniao(setX, setY);
-            SET *inter2 =  set_rb_intersecao(setX, setY);
-
-
-
-            set_rb_imprimir(uniao2);
-            set_rb_imprimir(inter2);
-
-            if(set_rb_pertence(setX, elem_pertenc_a))
-                printf("Pertence.\n");
-            else
-                printf("Nao pertence.\n");
-
-            
-
-            break;
-            
+    for(int i = 1; i <= tam_set_a; i++){
+        int chave;
+        scanf("%d ", &chave);
+        set_inserir(A, chave);
     }
+
+    for(int i = 1; i <= tam_set_b; i++){
+        int chave;
+        scanf("%d ", &chave);
+        set_inserir(B, chave);
+    }
+
+    int op;
+    scanf("%d", &op);
+
+    switch(op){
+        case 1: {
+                // Elemento x pertence ao conjunto A
+                int x;
+                scanf("%d", &x);
+
+                if (set_pertence(A, x))
+                    printf("Pertence.\n");
+                else
+                    printf("Nao pertence.\n");
+
+                break;
+        }
+
+        case 2: {
+                //União do Conjunto A com B
+                SET *C = set_uniao(A, B);
+                set_imprimir(C);                
+                break;
+        }
+
+        case 3: {
+                // Intersecção do Conjunto A com B
+                SET *C = set_intersecao(A, B);
+                set_imprimir(C);
+                break;
+        }
         
+        case 4: {
+                //Remoção ------- em a ou b????
+                SET *C;
+                set_imprimir(C);
+        }
+    }
+    
+    set_apagar(&A);
+    set_apagar(&B);
+    
     return 0;
 }

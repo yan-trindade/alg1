@@ -213,7 +213,7 @@ bool avl_buscar(AVL *t, int chave){
 void imprimir_no(NO *raiz){
     if(raiz != NULL){
         imprimir_no(raiz->esq);
-        printf("%d ", raiz->chave);
+        printf("%d, ", raiz->chave);
         imprimir_no(raiz->dir);
     }
 }

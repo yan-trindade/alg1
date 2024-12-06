@@ -157,7 +157,7 @@ bool rb_buscar(RB *t, int chave){
 void imprimir(NO *no){
     if(no != NULL){
         imprimir(no->esq);
-        printf("%d ", no->chave);
+        printf("%d, ", no->chave);
         imprimir(no->dir);
     }
 }
