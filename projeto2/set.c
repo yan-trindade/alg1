@@ -7,6 +7,7 @@
 typedef struct avl_ AVL;
 typedef struct set_ SET;
 
+/* Defines para ficar evidente qual estrutura estamos comparando */
 #define ED_AVL 0
 #define ED_RB 1
 
@@ -16,6 +17,10 @@ struct set_{
     RB *rb; // Estrutura = 1
 };
 
+/*
+Cria um novo set, alocando o espaço apenas para a estrutura escolhida.
+Esse conjunto é retornado.
+*/
 SET *set_criar(int estrutura_escolhida) {
     SET *set = (SET *) malloc(sizeof(SET));
     if (set == NULL)
@@ -33,6 +38,7 @@ SET *set_criar(int estrutura_escolhida) {
     return set;
 }
 
+/* Apaga a memória alocada para o set e o espaço alocado para a estrutura da árvore usada. */
 void set_apagar(SET **set) {
     if (*set != NULL)
         return;
@@ -46,6 +52,7 @@ void set_apagar(SET **set) {
     *set = NULL;
 }
 
+/* Insere o elemento na estrutura escolhida. */
 bool set_inserir(SET *set, int chave) {
     if (set->estrutura == ED_AVL)
         avl_inserir(set->avl, chave);
@@ -53,6 +60,7 @@ bool set_inserir(SET *set, int chave) {
         rb_inserir(set->rb, chave);  
 }
 
+/* Remove o elemento da estrutura escolhida. */
 bool set_remover(SET *set, int chave) {
     if (set->estrutura == ED_AVL)
         avl_remover(set->avl, chave);
@@ -60,6 +68,10 @@ bool set_remover(SET *set, int chave) {
         rb_remover(set->rb, chave);  
 }
 
+/* 
+Verifica se o elemento de valor igual a chave pertence ao set.
+Retorna verdadeiro ou falso.
+*/
 bool set_pertence(SET *set, int chave) {
     if (set->estrutura == ED_AVL)
         avl_buscar(set->avl, chave);
@@ -67,6 +79,10 @@ bool set_pertence(SET *set, int chave) {
         rb_buscar(set->rb, chave);  
 }
 
+/*
+Cria um novo set com elementos igual a união dos conjuntos A e B. 
+O set criado é retornado.
+*/
 SET *set_uniao(SET *A, SET *B){
     int estrutura = A->estrutura;
 
@@ -74,10 +90,6 @@ SET *set_uniao(SET *A, SET *B){
     if (uniao == NULL)
         return NULL;
     
-    uniao->estrutura = estrutura;
-    uniao->avl = NULL;
-    uniao->rb = NULL;
-
     if (estrutura == ED_AVL)
         uniao->avl = avl_unir(A->avl, B->avl);
     else
@@ -86,6 +98,10 @@ SET *set_uniao(SET *A, SET *B){
     return uniao;
 }
 
+/*
+Cria um novo set com elementos igual a intersecção dos conjuntos A e B. 
+O set criado é retornado.
+*/
 SET *set_intersecao(SET *A, SET *B){
     int estrutura = A->estrutura;
 
@@ -105,6 +121,7 @@ SET *set_intersecao(SET *A, SET *B){
     return intersecao;
 }
 
+/* Imprime os elementos do set. */
 void set_imprimir(SET *set){
     if (set == NULL)
         printf("Conjunto vazio.\n");
