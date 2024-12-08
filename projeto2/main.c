@@ -51,7 +51,7 @@ de A e B são inseridos nos respectivos conjuntos.
 /*                                                                             */
 /*******************************************************************************/
 
-/**           Por fim, a memória é devidamente liberada.                     ***/
+/**           Por fim, a memória é devidamente liberada.                      **/
 
 int main(){
     int estrutura_escolhida, tam_set_a, tam_set_b;
