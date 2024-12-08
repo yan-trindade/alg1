@@ -1,0 +1,59 @@
+Relatório Projeto 2
+
+1. Justificativa da Escolha das Estruturas de Dados
+
+Para implementar o TAD Conjunto, foram utilizadas as estruturas Árvore AVL e 
+Árvore Rubro-Negra (LLRB). Tais escolhas se baseiam nos seguintes motivos:
+
+- Garantem eficiência com altura máxima de O(log n), essencial para as operações 
+  de busca, inserção e remoção.
+- A Árvore AVL possui balanceamento rigoroso, resultando em alturas menores, o 
+  que favorece operações de busca.
+- A Árvore Rubro-Negra, também balanceada (segundo outros critérios), sendo ideal para conjuntos dinâmicos.
+- As duas estruturas possibilitam implementação eficiente das operações de conjuntos (união e 
+  interseção e pertencimento) pois unem a busca binária com estrutura encadeada, com uso de
+  memória flexível.
+
+2. Análise de Complexidade
+
+2.1 Operações Básicas
+- Criar Conjunto:
+  - AVL e LLRB: O(1), pois envolve apenas a inicialização da raiz como nula.
+
+- Inserir Elemento:
+  - AVL: O(log n) para localizar a posição + O(log n) para rebalancear, totalizando 
+    O(2 log n).
+  - LLRB: O(log n) para localizar a posição + O(1) para rebalanceamento localizado, 
+    totalizando O(log n).
+
+- Remover Elemento:
+  - AVL: O(log n) para localizar o nó + O(log n) para rebalancear, totalizando 
+    O(2 log n).
+  - LLRB: O(log n) para localizar o nó + O(log n) para possíveis ajustes e 
+    rebalanceamento, totalizando O(2 log n).
+
+- Imprimir Elementos:
+  - AVL e LLRB: O(n), pois todos os nós são visitados em uma travessia em-ordem.
+
+2.2 Operações Específicas
+- Pertence (Verificar Elemento):
+  - AVL e LLRB: O(log n), devido à busca binária até a profundidade da árvore.
+
+- União entre Dois Conjuntos:
+  - AVL e LLRB: O(m + n) para percorrer ambos os conjuntos + O((m + n) * log n) para 
+    inserir em uma nova árvore, totalizando O((m + n) * log n).
+
+- Interseção entre Dois Conjuntos:
+  - AVL e LLRB: O(n) para percorrer os elementos de A + O(n * log m) para verificar 
+    a presença em B, totalizando O(n * log m).
+
+3. Conclusão
+
+As Árvores AVL e Rubro-Negra são adequadas para implementar conjuntos devido 
+à eficiência logarítmica em suas operações. A AVL é indicada para cenários onde 
+buscas são mais frequentes, devido ao menor custo em altura. Por outro lado, a 
+LLRB é mais eficiente em cenários dinâmicos com muitas inserções e remoções, 
+graças ao custo reduzido no rebalanceamento.
+
+A escolha entre AVL e LLRB deve levar em conta o perfil das operações realizadas 
+no conjunto, garantindo desempenho ideal para o problema proposto.
