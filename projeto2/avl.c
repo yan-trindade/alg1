@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-//#define max(a,b)  (a >= b ? a : b)
 
 typedef struct no_ NO;
 typedef struct avl_ AVL;
