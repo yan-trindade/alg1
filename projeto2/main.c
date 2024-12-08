@@ -30,14 +30,29 @@ Na função main(), são lidos da entrada padrão, na ordem, um valor entre 0 e 
 indicando a estrutura escolhida (AVL ou Rubro-Negra), e os tamanhos dos 
 conjuntos A e B. Com base nessas informações, os  conjuntos são criados, e os elementos 
 de A e B são inseridos nos respectivos conjuntos.
-
-Em seguida, é lido um inteiro OPERAÇÃO (entre 1 e 4), que determina qual operação será realizada 
-sobre os conjuntos: (1) verificar se um elemento x pertence ao conjunto A; (2) realizar a união entre 
-A e B; (3) calcular a interseção entre A e B; (4) ???????????. 
-A operação correspondente é então executada utilizando um bloco switch/case.
-
-Por fim, a memória alocada pelos conjuntos é devidamente liberada.
 */
+
+/*******************************************************************************/
+/*                          OPERAÇÕES DISPONÍVEIS                             */
+/*******************************************************************************/
+/*                                                                             */
+/*  A seguir, as operações realizadas sobre os conjuntos:                      */
+/*                                                                             */
+/*  (1) Verificar se um elemento x pertence ao conjunto A.                     */
+/*  (2) Realizar a união entre os conjuntos A e B.                             */
+/*  (3) Calcular a interseção entre os conjuntos A e B.                        */
+/*  (4) Remover um elemento x do conjunto A.                                   */
+/*  (5) Executar múltiplas operações:                                          */
+/*      - Teste de pertencimento;                                              */
+/*      - União entre os conjuntos A e B;                                      */
+/*      - Interseção entre os conjuntos A e B.                                 */
+/*                                                                             */
+/*  A operação correspondente é executada utilizando um bloco switch/case.     */
+/*                                                                             */
+/*******************************************************************************/
+
+/**           Por fim, a memória é devidamente liberada.                     ***/
+
 int main(){
     int estrutura_escolhida, tam_set_a, tam_set_b;
     scanf("%d", &estrutura_escolhida);
@@ -66,7 +81,7 @@ int main(){
         case 1: {
                 // Elemento x pertence ao conjunto A
                 int x;
-                scanf("%d", &x);
+                scanf("%d ", &x);
 
                 if (set_pertence(A, x))
                     printf("Pertence.\n");
@@ -91,10 +106,33 @@ int main(){
         }
         
         case 4: {
-                // Remoção ------- em a ou b????
-                SET *C;
-                set_imprimir(C);
+                // Remove elemento x de A
+                int x;
+                scanf("%d", &x);
+                if(set_pertence(A, x)){
+                    set_remover(A, x);
+                    set_imprimir(A);
+                }
+                break;
         }
+
+        case 5: {
+                // Elemento x pertence ao conjunto A + União do Conjunto A com B + Interseção do Conjunto A com B.
+                int x;
+                scanf("%d ", &x);
+
+                if (set_pertence(A, x))
+                    printf("Pertence.\n");
+                else
+                    printf("Nao pertence.\n");
+
+                SET *C = set_uniao(A, B);
+                set_imprimir(C);
+
+                SET *D = set_intersecao(A, B);
+                set_imprimir(D);
+                break;
+            }
     }
     
     set_apagar(&A);
