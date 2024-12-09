@@ -139,23 +139,22 @@ bool avl_inserir(AVL *t, int chave){
 }
 
 
-void troca_max_esq(NO *subarvore, NO *pai, NO *removido) {
-    NO *atual = subarvore;
-    NO *anterior = pai;
-    while (atual->dir != NULL){
-        anterior = atual;
-        atual = atual->dir;
+void troca_max_esq(NO *troca, NO *raiz, NO *ant) {
+    if (troca->dir != NULL) {
+        troca_max_esq(troca->dir, raiz, troca);
+        return;
     }
 
-    removido->chave = atual->chave;
+    if (raiz == ant) {
+        raiz->esq = troca->esq;
+    } else {
+        ant->dir = troca->esq;
+    }
 
-    if(anterior->dir == atual)
-        anterior->dir = atual->esq;
-    else
-        anterior->esq = atual->esq;
+    raiz->chave = troca->chave;
 
-    free(atual);
-    atual = NULL;
+    free(troca);
+    troca = NULL;
 }
 
 /* Remove a chave da árvore. É feito uma busca para encontrar o elemento na árvore.
@@ -163,47 +162,48 @@ void troca_max_esq(NO *subarvore, NO *pai, NO *removido) {
 * Se não, o elemento maior da subárvore esquerda do elemento com a chave buscada é substituido no lugar dele.
 * Por fim, é recalculado o FB e verificado se é necessário fazer rebalanceamentos. 
 */
-NO * avl_remover_no(NO **raiz, int chave){
+NO *avl_remover_no(NO **raiz, int chave) {
+    NO *aux;
+
     if(*raiz == NULL)
         return NULL;
 
     if(chave == (*raiz)->chave){
-        if((*raiz)->esq == NULL || (*raiz)->dir == NULL){
-            NO *aux = *raiz;
-            if((*raiz)->esq == NULL)
-                *raiz = (*raiz)->dir;
-            else
-                *raiz = (*raiz)->esq;
-
+        if ((*raiz)->esq == NULL || (*raiz)->dir == NULL){
+            aux = *raiz;
+            *raiz = ((*raiz)->esq != NULL) ? (*raiz)->esq : (*raiz)->dir;
             free(aux);
             aux = NULL;
+        } else{
+            troca_max_esq((*raiz)->esq, *raiz, *raiz);
         }
-        else
-            troca_max_esq((*raiz)->esq, (*raiz), (*raiz));
-    }
-    else if(chave < (*raiz)->chave)
+    } else if(chave < (*raiz)->chave){
         (*raiz)->esq = avl_remover_no(&(*raiz)->esq, chave);
-    else if(chave > (*raiz)->chave)
+    } else{
         (*raiz)->dir = avl_remover_no(&(*raiz)->dir, chave);
+    }
 
-    if((*raiz) != NULL){
-        (*raiz)->FB = (avl_altura((*raiz)->esq) - avl_altura((*raiz)->dir));
+
+    if(*raiz != NULL){
+        (*raiz)->FB = avl_altura((*raiz)->esq) - avl_altura((*raiz)->dir);
+
 
         if((*raiz)->FB == 2){
-            if((*raiz)->esq->FB >= 0)
-                rodar_direita(*raiz);
+            if ((*raiz)->esq && (*raiz)->esq->FB >= 0)
+                *raiz = rodar_direita(*raiz);
             else
-                rodar_esquerda_direita(*raiz);
+                *raiz = rodar_esquerda_direita(*raiz);
         }
+
         if((*raiz)->FB == -2){
-            if((*raiz)->dir <= 0)
-                rodar_esquerda(*raiz);
+            if ((*raiz)->dir && (*raiz)->dir->FB <= 0)
+                *raiz = rodar_esquerda(*raiz);
             else
-                rodar_direita_esquerda(*raiz);
+                *raiz = rodar_direita_esquerda(*raiz);
         }
     }
 
-    return(*raiz);
+    return *raiz;
 }
 
 /* Função pública para remoção da chave. */
