@@ -104,13 +104,13 @@ int main(){
                 // Remove elemento x de A
                 int x;
                 scanf("%d", &x);
-                if(set_pertence(A, x)){
+
+                if (set_pertence(A, x))
                     set_remover(A, x);
-                    set_imprimir(A);
-                }
+                    
+                set_imprimir(A);
                 break;
         }
-
     }
     
     set_apagar(&A);
