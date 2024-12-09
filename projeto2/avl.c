@@ -5,11 +5,12 @@
 typedef struct no_ NO;
 typedef struct avl_ AVL;
 
+/* A árvore é constituída dessas estruturas. */
 struct no_{
     int chave;
     NO * esq;
     NO * dir;
-    int FB;
+    int FB; // altura esquerda - altura direita
 };
 
 struct avl_{
@@ -20,7 +21,7 @@ int max(int a, int b){
     return(a >= b ? a : b);
 }
 
-/* Aloca a memória necessária para a estrutura avl_. Caso foi possivel alocar, a raíz é recebe NULL.
+/* Aloca a memória necessária para a estrutura avl_. Caso foi possivel alocar, a raíz recebe NULL.
 * O ponteiro para a árvore é retornado. */
 AVL * avl_criar(void){
     AVL * t = (AVL *) malloc(sizeof(AVL));
@@ -210,7 +211,7 @@ bool avl_remover(AVL *t, int chave){
     return((t->raiz = avl_remover_no(&t->raiz, chave)) != NULL);
 }
 
-/* Apaga a árvore e os nós utilizados. */
+/* Apaga a árvore e os nós utilizados, seguindo um percurso pós-ordem. */
 void apagar_arvore(NO **no){
     if(*no != NULL){
         apagar_arvore(&(*no)->esq);
@@ -256,7 +257,7 @@ void imprimir_no(NO *raiz){
     }
 }
 
-/* Imprimindo os nós da árvore. */
+/* Imprime os nós da árvore. */
 void avl_imprimir(AVL *t){
     if(t != NULL){
         imprimir_no(t->raiz);
