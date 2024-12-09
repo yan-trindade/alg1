@@ -40,7 +40,7 @@ SET *set_criar(int estrutura_escolhida) {
 
 /* Apaga a memória alocada para o set e o espaço alocado para a estrutura da árvore usada. */
 void set_apagar(SET **set) {
-    if (*set != NULL)
+    if (*set == NULL)
         return;
     
     if ((*set)->estrutura == ED_AVL)
