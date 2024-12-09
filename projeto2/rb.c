@@ -33,6 +33,36 @@ NO * criar_no(int chave, bool cor){
     return no;
 }
 
+/* Aloca a memória necessária para a estrutura rb_. Caso foi possivel alocar, a raíz recebe NULL.
+* O ponteiro para a árvore é retornado. */
+RB * rb_criar(void){
+    RB *t = (RB *) malloc(sizeof(RB));
+    if(t != NULL) 
+        t->raiz = NULL;
+    return t;
+}
+
+/* Apaga todos os nós da árvore, seguindo um percurso pós-ordem. */
+void apagar_no(NO **no){
+    if(*no != NULL){
+        apagar_no(&(*no)->esq);
+        apagar_no(&(*no)->dir);
+        free(*no);
+        *no = NULL;
+    }
+}
+
+/* Apaga a árvore e os nós utilizados. */
+bool rb_apagar_arvore(RB **t){
+    if(t == NULL || *t == NULL) 
+        return false;
+
+    apagar_no(&(*t)->raiz);
+    free(*t);
+    *t = NULL;
+    return true;
+}
+
 /* Verifica se o nó e vermelho. */
 bool eh_vermelho(NO *no){
     if(no == NULL) 
@@ -41,7 +71,7 @@ bool eh_vermelho(NO *no){
 }
 
 /* Função para rotacionar o o nó "a" para a esquerda
-* É tomado o cuidando para não perder as subárvores dos filhos dos nós relacionados com a rotação.
+* É tomado o cuidado para não perder as subárvores dos filhos dos nós relacionados com a rotação.
 * O nó b, que tomou a posição de "raiz" do nó a, recebe a cor de "a" e é retornado para poder ser conectado com a árvore. */
 NO * rotacionar_esquerda(NO *a){
     NO *b = a->dir;
@@ -53,7 +83,7 @@ NO * rotacionar_esquerda(NO *a){
 }
 
 /* Função para rotacionar o nó "a" para a direita;
-* É tomado o cuidando para não perder as subárvores dos filhos dos nós relacionados com a rotação.
+* É tomado o cuidado para não perder as subárvores dos filhos dos nós relacionados com a rotação.
 * O nó b, que tomou a posição de "raiz" do nó a, recebe a cor de "a" e é retornado para poder ser conectado com a árvore. */
 NO * rotacionar_direita(NO *a){
     NO *b = a->esq;
@@ -91,15 +121,6 @@ NO * balancear(NO *no){
     return no;
 }
 
-/* Aloca a memória necessária para a estrutura rb_. Caso foi possivel alocar, a raíz recebe NULL.
-* O ponteiro para a árvore é retornado. */
-RB * rb_criar(void){
-    RB *t = (RB *) malloc(sizeof(RB));
-    if(t != NULL) 
-        t->raiz = NULL;
-    return t;
-}
-
 /* É feito a posição de inserção na árvore. Quando encontrado, é criado um nó com a chave. Após a inserção, é verificado para ele, e para todos os nós anteriores (na volta da recursão) se é necessário fazer o balanceamento da árvore.
 */
 NO * inserir_no(NO *no, int chave){
@@ -122,27 +143,6 @@ bool rb_inserir(RB *t, int chave){
 
     t->raiz = inserir_no(t->raiz, chave);
     t->raiz->cor = PRETO;  // A raiz deve ser sempre preta
-    return true;
-}
-
-/* Apaga todos os nós da árvore, seguindo um percurso pós-ordem. */
-void apagar_no(NO **no){
-    if(*no != NULL){
-        apagar_no(&(*no)->esq);
-        apagar_no(&(*no)->dir);
-        free(*no);
-        *no = NULL;
-    }
-}
-
-/* Apaga a árvore e os nós utilizados. */
-bool rb_apagar_arvore(RB **t){
-    if(t == NULL || *t == NULL) 
-        return false;
-
-    apagar_no(&(*t)->raiz);
-    free(*t);
-    *t = NULL;
     return true;
 }
 
@@ -384,7 +384,6 @@ void rb_compara_igual_insere(NO *raiz, RB *b, RB *inter){
     
     rb_compara_igual_insere(raiz->esq, b, inter);
     rb_compara_igual_insere(raiz->dir, b, inter);
-
 }
 
 /* Cria uma nova árvore com a intersecção entre "a" e "b". */

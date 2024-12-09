@@ -34,7 +34,7 @@
     /* Verifica se a árvore está vazia. */
     bool rb_eh_vazia(RB *t);
 
-    /* A função une duas árvores distintas em uma nova árvore. 
+    /* A função une os elementos de duas árvores distintas em uma nova árvore. 
     * O ponteiro para a nova árvore é retornada.*/
     RB * rb_unir(RB *a, RB *b);
 
