@@ -30,7 +30,7 @@
     /* Imprime todos os elementos da árvore através do percurso em-ordem. */
     void avl_imprimir(AVL *t);
 
-    /* A função une duas árvores distintas em uma nova árvore. 
+    /* A função une os elementos de duas árvores distintas em uma nova árvore. 
     * O ponteiro para a nova árvore é retornada.*/
     AVL *avl_unir(AVL *a, AVL *b);
 

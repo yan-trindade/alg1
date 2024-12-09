@@ -1,11 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include "avl.h"
 
 typedef struct no_ NO;
 typedef struct avl_ AVL;
 
-/* A árvore é constituída dessas estruturas. */
+/* A árvore é constituída dessa estrutura. */
 struct no_{
     int chave;
     NO * esq;
@@ -45,7 +46,7 @@ NO * avl_cria_no(int chave){
 }
 
 /* Função para rotacionar o nó "a" para a direita;
-* É tomado o cuidando para não perder as subárvores dos filhos dos nós relacionados com a rotação.
+* É tomado o cuidado para não perder as subárvores dos filhos dos nós relacionados com a rotação.
 * Os nós recebem 0 para o fator de balanceamento, resultado da rotação. 
 * O nó b, que tomou a posição de "raiz" do nó a, é retornado para poder ser conectado com a árvore. */
 NO * rodar_direita(NO *a){
@@ -58,8 +59,8 @@ NO * rodar_direita(NO *a){
     return b;
 }
 
-/* Função para rotacionar o o nó "a" para a esquerda
-* É tomado o cuidando para não perder as subárvores dos filhos dos nós relacionados com a rotação.
+/* Função para rotacionar o nó "a" para a esquerda.
+* É tomado o cuidado para não perder as subárvores dos filhos dos nós relacionados com a rotação.
 * Os nós recebem 0 para o fator de balanceamento, resultado da rotação. 
 * O nó b, que tomou a posição de "raiz" do nó a, é retornado para poder ser conectado com a árvore. */
 NO * rodar_esquerda(NO *a){
@@ -73,8 +74,8 @@ NO * rodar_esquerda(NO *a){
 }
 
 /* Rotacionar, a partir do nó a, para a esquerda e direita. 
-* Primeiramente, é rotacionado o nó a esquerda de "a", seguido da rotação de "a" para a direita. 
-* O retorno de rodar_direita() é retornado.
+* Primeiramente, é rotacionado o nó filho esquerdo de "a", seguido da rotação de "a" para a direita. 
+* É retornado o resultado de rodar_direita().
 */
 NO * rodar_esquerda_direita(NO *a){
     a->esq = rodar_esquerda(a->esq);
@@ -82,8 +83,8 @@ NO * rodar_esquerda_direita(NO *a){
 }
 
 /* Rotacionar, a partir do nó a, para a direita e esquerda. 
-* Primeiramente, é rotacionado o nó a direita de "a", seguido da rotação de "a" para a esquerda. 
-* O retorno de rodar_esquerda() é retornado.
+* Primeiramente, é rotacionado o nó filho direito de "a", seguido da rotação de "a" para a esquerda. 
+* É retornado o resultado de rodar_esquerda().
 */
 NO * rodar_direita_esquerda(NO *a){
     a->dir = rodar_direita(a->dir);
@@ -96,18 +97,19 @@ NO * rodar_direita_esquerda(NO *a){
 */
 int avl_altura(NO *raiz){
     if(raiz == NULL)
-        return 0;
+        return -1;
     else{
         return (1 + max(avl_altura(raiz->esq), avl_altura(raiz->dir)));
     }
 }
 
 /* Função para inserir um novo nó na árvore. 
-* Inicialmente é buscado a chave na árvore. Na posição correta, é inserido..
+* Inicialmente é buscado a chave na árvore. Quando na posição correta, é inserido.
 * Para o nó inserido e todos os nós anteriores a ele, é recalculado o FB e verificado se é necessário rotacionar.
 * O nó inserido (raiz) é retornado para ser encadeado na árvore AVL. 
 */
 NO * avl_inserir_no(NO *raiz, int chave){
+    // Busca posição para inserção
     if(raiz == NULL)
         raiz = avl_cria_no(chave);
     else if(chave < raiz->chave)
@@ -117,6 +119,7 @@ NO * avl_inserir_no(NO *raiz, int chave){
 
     raiz->FB = (avl_altura(raiz->esq) - avl_altura(raiz->dir));
 
+    // Verifica se é necessário balancear
     if(raiz->FB == 2){
         if(raiz->esq->FB >= 0)
             raiz = rodar_direita(raiz);
@@ -138,21 +141,27 @@ bool avl_inserir(AVL *t, int chave){
     return((t->raiz = avl_inserir_no(t->raiz, chave)) != NULL);
 }
 
-
+/* Troca o maior elemento da esquerda com a raíz, removendo o nó posteriormente. */
 void troca_max_esq(NO *troca, NO *raiz, NO *ant) {
+    // Percorre a árvore até encontrar o maior elemento
     if (troca->dir != NULL) {
         troca_max_esq(troca->dir, raiz, troca);
         return;
     }
 
     if (raiz == ant) {
+        // Caso em que o maior elemento é filho da raiz
+        // Encadeia subárvore esquerda com a esquerda da raiz
         raiz->esq = troca->esq;
     } else {
+        // Encadeia subárvore esquerda do maior elemento com o pai desse nó
         ant->dir = troca->esq;
     }
 
+    // Faz a troca de chaves
     raiz->chave = troca->chave;
 
+    // Libera nó folha (anteriormente ocupado pelo max esquerda)
     free(troca);
     troca = NULL;
 }
@@ -170,11 +179,13 @@ NO *avl_remover_no(NO **raiz, int chave) {
 
     if(chave == (*raiz)->chave){
         if ((*raiz)->esq == NULL || (*raiz)->dir == NULL){
+            // Caso com 0 ou 1 subárvore não nula
             aux = *raiz;
             *raiz = ((*raiz)->esq != NULL) ? (*raiz)->esq : (*raiz)->dir;
             free(aux);
             aux = NULL;
         } else{
+            // Caso com 2 subárvores não nulas
             troca_max_esq((*raiz)->esq, *raiz, *raiz);
         }
     } else if(chave < (*raiz)->chave){
@@ -183,11 +194,10 @@ NO *avl_remover_no(NO **raiz, int chave) {
         (*raiz)->dir = avl_remover_no(&(*raiz)->dir, chave);
     }
 
-
     if(*raiz != NULL){
         (*raiz)->FB = avl_altura((*raiz)->esq) - avl_altura((*raiz)->dir);
-
-
+        
+        // Verifica se é necessário rebalancear
         if((*raiz)->FB == 2){
             if ((*raiz)->esq && (*raiz)->esq->FB >= 0)
                 *raiz = rodar_direita(*raiz);
@@ -257,7 +267,7 @@ void imprimir_no(NO *raiz){
     }
 }
 
-/* Imprime os nós da árvore. */
+/* Imprime todos os nós da árvore. */
 void avl_imprimir(AVL *t){
     if(t != NULL){
         imprimir_no(t->raiz);
@@ -269,15 +279,14 @@ void avl_imprimir(AVL *t){
 Daqui pra frente funcoes criadas pra ajudar nos conjutos!!!!
 ************************************ */
 
-/* Insere todos os elementos na arvore "destino". A inserção é feita na ordem pré-ordem. 
-* Caso um elemento já esteja inserido, a função avl_inserir() garante que não ele não vai ser inserido novamente.
-*/
-void inserir_todos_elementos(NO *raiz, AVL *destino){
+/* Insere todos os elementos na árvore "destino". A inserção é feita no percurso pré-ordem. 
+* Caso um elemento já esteja inserido, a função avl_inserir() garante que não ele não vai ser inserido novamente. */
+void avl_inserir_todos_elementos(NO *raiz, AVL *destino){
     if(raiz == NULL)
         return;
     avl_inserir(destino, raiz->chave);
-    inserir_todos_elementos(raiz->esq, destino);
-    inserir_todos_elementos(raiz->dir, destino);
+    avl_inserir_todos_elementos(raiz->esq, destino);
+    avl_inserir_todos_elementos(raiz->dir, destino);
 }
 
 /* Cria uma nova árvore e insere todos os elementos de "a" seguido dos elementos de "b". */
@@ -285,9 +294,9 @@ AVL * avl_unir(AVL *a, AVL *b){
     AVL *c = avl_criar();
     if(c != NULL){
         if(a->raiz != NULL)
-            inserir_todos_elementos(a->raiz, c);
+            avl_inserir_todos_elementos(a->raiz, c);
         if(b->raiz != NULL)    
-            inserir_todos_elementos(b->raiz, c);
+            avl_inserir_todos_elementos(b->raiz, c);
     }
 
     return c;
@@ -297,23 +306,22 @@ AVL * avl_unir(AVL *a, AVL *b){
 * Se o retorno de avl_buscar() é true, então é inserido na nova árvore.
 * É feito essa checagem para todos os elementos de "a". 
 */
-void compara_igual_insere(NO *raiz, AVL *b, AVL *inter){
+void avl_compara_igual_insere(NO *raiz, AVL *b, AVL *inter){
     if(raiz == NULL)
         return;
 
     if(avl_buscar(b, raiz->chave))
         avl_inserir(inter, raiz->chave);
     
-    compara_igual_insere(raiz->esq, b, inter);
-    compara_igual_insere(raiz->dir, b, inter);
-
+    avl_compara_igual_insere(raiz->esq, b, inter);
+    avl_compara_igual_insere(raiz->dir, b, inter);
 }
 
 /* Cria uma nova árvore com a intersecção entre "a" e "b". */
 AVL * avl_inter(AVL *a, AVL *b){
     AVL *inter = avl_criar();
     if(a != NULL && b != NULL){
-        compara_igual_insere(a->raiz, b, inter);
+        avl_compara_igual_insere(a->raiz, b, inter);
     }
     return inter;
 }
