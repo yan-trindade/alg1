@@ -59,13 +59,13 @@ int main(){
 
     for(int i = 1; i <= tam_set_a; i++){
         int chave;
-        scanf("%d ", &chave);
+        scanf("%d", &chave);
         set_inserir(A, chave);
     }
 
     for(int i = 1; i <= tam_set_b; i++){
         int chave;
-        scanf("%d ", &chave);
+        scanf("%d", &chave);
         set_inserir(B, chave);
     }
 
@@ -76,7 +76,7 @@ int main(){
         case 1: {
                 // Elemento x pertence ao conjunto A
                 int x;
-                scanf("%d ", &x);
+                scanf("%d", &x);
 
                 if (set_pertence(A, x))
                     printf("Pertence.\n");
