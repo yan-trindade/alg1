@@ -42,11 +42,6 @@ de A e B são inseridos nos respectivos conjuntos.
 /*  (2) Realizar a união entre os conjuntos A e B.                             */
 /*  (3) Calcular a interseção entre os conjuntos A e B.                        */
 /*  (4) Remover um elemento x do conjunto A.                                   */
-/*  (5) Executar múltiplas operações:                                          */
-/*      - Teste de pertencimento;                                              */
-/*      - União entre os conjuntos A e B;                                      */
-/*      - Interseção entre os conjuntos A e B.                                 */
-/*                                                                             */
 /*  A operação correspondente é executada utilizando um bloco switch/case.     */
 /*                                                                             */
 /*******************************************************************************/
@@ -116,23 +111,6 @@ int main(){
                 break;
         }
 
-        case 5: {
-                // Elemento x pertence ao conjunto A + União do Conjunto A com B + Interseção do Conjunto A com B.
-                int x;
-                scanf("%d ", &x);
-
-                if (set_pertence(A, x))
-                    printf("Pertence.\n");
-                else
-                    printf("Nao pertence.\n");
-
-                SET *C = set_uniao(A, B);
-                set_imprimir(C);
-
-                SET *D = set_intersecao(A, B);
-                set_imprimir(D);
-                break;
-            }
     }
     
     set_apagar(&A);
