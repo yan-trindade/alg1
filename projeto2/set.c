@@ -110,7 +110,7 @@ SET *set_intersecao(SET *A, SET *B){
     int estrutura = A->estrutura;
 
     /* Não passar estrutura para não alocar espaço para a árvore.
-    * A árvore é criada em avl/rb unir() */
+    * A árvore é criada em avl/rb interseccao() */
     SET *intersecao = set_criar(-1);
     if (intersecao == NULL)
         return NULL;
