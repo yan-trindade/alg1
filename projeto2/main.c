@@ -90,6 +90,7 @@ int main(){
                 // União do Conjunto A com B
                 SET *C = set_uniao(A, B);
                 set_imprimir(C);                
+                set_apagar(&C);
                 break;
         }
 
@@ -97,6 +98,7 @@ int main(){
                 // Intersecção do Conjunto A com B
                 SET *C = set_intersecao(A, B);
                 set_imprimir(C);
+                set_apagar(&C);
                 break;
         }
         
