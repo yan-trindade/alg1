@@ -32,7 +32,7 @@ SET *set_criar(int estrutura_escolhida) {
 
     if (estrutura_escolhida == ED_AVL)
         set->avl = avl_criar();
-    else
+    else if (estrutura_escolhida == ED_RB)
         set->rb = rb_criar();
 
     return set;
@@ -86,9 +86,13 @@ O set criado é retornado.
 SET *set_uniao(SET *A, SET *B){
     int estrutura = A->estrutura;
 
-    SET *uniao = set_criar(estrutura);
+    /* Não passar estrutura para não alocar espaço para a árvore.
+    * A árvore é criada em avl/rb unir() */
+    SET *uniao = set_criar(-1);
     if (uniao == NULL)
         return NULL;
+
+    uniao->estrutura = estrutura;
     
     if (estrutura == ED_AVL)
         uniao->avl = avl_unir(A->avl, B->avl);
@@ -105,13 +109,13 @@ O set criado é retornado.
 SET *set_intersecao(SET *A, SET *B){
     int estrutura = A->estrutura;
 
-    SET *intersecao = set_criar(estrutura);
+    /* Não passar estrutura para não alocar espaço para a árvore.
+    * A árvore é criada em avl/rb unir() */
+    SET *intersecao = set_criar(-1);
     if (intersecao == NULL)
         return NULL;
     
     intersecao->estrutura = estrutura;
-    intersecao->avl = NULL;
-    intersecao->rb = NULL;
 
     if (estrutura == ED_AVL)
         intersecao->avl = avl_inter(A->avl, B->avl);
