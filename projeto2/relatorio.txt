@@ -41,7 +41,8 @@ Para implementar o TAD Conjunto, foram utilizadas as estruturas Árvore AVL e
 
 - União entre Dois Conjuntos:
   - AVL e LLRB: O(m + n) para percorrer ambos os conjuntos + O((m + n) * log n) para 
-    inserir em uma nova árvore, totalizando O((m + n) * log n).
+    inserir em uma nova árvore, totalizando O((m + n) * log n), em que n e m são a quantidade
+    de nós para AVL e LLRB.
 
 - Interseção entre Dois Conjuntos:
   - AVL e LLRB: O(n) para percorrer os elementos de A + O(n * log m) para verificar 
@@ -57,3 +58,43 @@ graças ao custo reduzido no rebalanceamento.
 
 A escolha entre AVL e LLRB deve levar em conta o perfil das operações realizadas 
 no conjunto, garantindo desempenho ideal para o problema proposto.
+
+4. Casos Testes
+
+A seguir explicaremos os casos testes disponibilizados. Os casos ímpares
+são com a estrutura AVL, enquanto os pares, para a LLRB. As entradas
+são as mesmas para ambas estruturas. 
+
+Operação de pertencimento:
+  - Caso 1 e 2: elemento está presente no conjunto A.
+  - Caso 3 e 4: elemento não está presente no conjunto A.
+  - Caso 5 e 6: conjunto A vazio.
+
+Operação de união:
+  - Caso 7 e 8: conjunto A pertence ao conjunto B
+  - Caso 9 e 10: conjunto B vazio
+
+Operação de intersecção:
+  - Caso 11 e 12: nenhum elemento em comum 
+  - Caso 13 e 14: conjunto A vazio
+  - Caso 15 e 16: 1 elemento em comum
+  - Caso 17 e 18: todos elementos em comum 
+  - Caso 19 e 20: ambos conjuntos vazios 
+
+Operação de remoção:
+  - Caso 21 e 22: elemento presente no conjunto A 
+  - Caso 23 e 24: elemento não pertence ao conjunto A
+  - Caso 25 e 26: conjunto vazio 
+
+Teste de estresse:
+  - Caso 27 e 28: conjuntos de 10000 elementos
+  - Caso 29 e 30: conjuntos de 50000 elementos
+
+
+
+
+
+
+
+
+

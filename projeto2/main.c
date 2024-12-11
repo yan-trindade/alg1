@@ -107,6 +107,8 @@ int main(){
 
                 if (set_pertence(A, x))
                     set_remover(A, x);
+                else
+                    printf("Elemento não pertence ao conjunto A\n");
                     
                 set_imprimir(A);
                 break;
